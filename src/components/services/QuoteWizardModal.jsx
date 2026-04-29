@@ -6,6 +6,7 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Settings, Home, Square, Sun, MapPin, Wrench, Phone } from "lucide-react";
+import { normalizeEntityList } from "@/lib/entity-list";
 
 const WIZARD_KEY = "quote_wizard";
 const ICON_MAP = { Home, Square, Sun, MapPin, Settings, Wrench, Phone };
@@ -31,20 +32,23 @@ export default function QuoteWizardModal({ open, onOpenChange, service }) {
     if (!val) setTimeout(reset, 300);
   };
 
-  const { data: allSteps = [] } = useQuery({
+  const { data: allStepsData = [] } = useQuery({
     queryKey: ["wizard_steps_active", WIZARD_KEY],
     queryFn: () => base44.entities.WizardStep.filter({ wizard_key: WIZARD_KEY, active: true }, "order", 50),
   });
 
-  const { data: allOptions = [] } = useQuery({
+  const { data: allOptionsData = [] } = useQuery({
     queryKey: ["wizard_options_all", WIZARD_KEY],
     queryFn: () => base44.entities.WizardOption.filter({ wizard_key: WIZARD_KEY, active: true }, "order", 200),
   });
 
-  const { data: wizardConfigs = [] } = useQuery({
+  const { data: wizardConfigsData = [] } = useQuery({
     queryKey: ["wizard_config", WIZARD_KEY],
     queryFn: () => base44.entities.Wizard.filter({ key: WIZARD_KEY, active: true }),
   });
+  const allSteps = normalizeEntityList(allStepsData);
+  const allOptions = normalizeEntityList(allOptionsData);
+  const wizardConfigs = normalizeEntityList(wizardConfigsData);
   const wizardConfig = wizardConfigs[0];
 
   const currentStep = allSteps[stepIndex];

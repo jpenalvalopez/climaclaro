@@ -7,13 +7,15 @@ import { motion } from "framer-motion";
 import { ArrowRight, Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { normalizeEntityList } from "@/lib/entity-list";
 
 export default function FeaturedServices() {
-  const { data: services, isLoading } = useQuery({
+  const { data: servicesData, isLoading } = useQuery({
     queryKey: ["featured-services"],
     queryFn: () => base44.entities.Service.filter({ active: true }, "sort_order", 6),
     initialData: [],
   });
+  const services = normalizeEntityList(servicesData);
 
   if (!isLoading && services.length === 0) return null;
 

@@ -4,6 +4,7 @@ import { Search, X, Zap } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
 import { createPageUrl } from "../../utils";
+import { normalizeEntityList } from "@/lib/entity-list";
 
 function deriveModel(name) {
   if (!name) return "";
@@ -33,11 +34,12 @@ export default function HeaderSearch() {
   const containerRef = useRef(null);
   const navigate = useNavigate();
 
-  const { data: products = [] } = useQuery({
+  const { data: productsData = [] } = useQuery({
     queryKey: ["products_search_index"],
     queryFn: () => base44.entities.Product.filter({ active: true }, "sort_order", 300),
     staleTime: 1000 * 60 * 5,
   });
+  const products = normalizeEntityList(productsData);
 
   const results = useMemo(() => {
     if (!query.trim() || query.length < 2) return [];

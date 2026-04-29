@@ -4,14 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 import { useCmsTexts } from "@/components/cms/cmsHelpers";
+import { normalizeEntityList } from "@/lib/entity-list";
 
 export default function TestimonialsSection() {
   const { t } = useCmsTexts();
-  const { data: reviews } = useQuery({
+  const { data: reviewsData } = useQuery({
     queryKey: ["reviews-home"],
     queryFn: () => base44.entities.Review.list("-created_date", 6),
     initialData: [],
   });
+  const reviews = normalizeEntityList(reviewsData);
 
   return (
     <section className="py-20 md:py-28 bg-white">

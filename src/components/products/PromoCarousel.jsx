@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { base44 } from "@/api/base44Client";
+import { normalizeEntityList } from "@/lib/entity-list";
 
 // page: "products" | "home"
 export default function PromoCarousel({ page = "products" }) {
@@ -14,7 +15,7 @@ export default function PromoCarousel({ page = "products" }) {
     queryFn: () => base44.entities.PromoSlide.list("sort_order", 50),
   });
 
-  const slides = allSlides.filter(s => {
+  const slides = normalizeEntityList(allSlides).filter(s => {
     if (!s.active) return false;
     if (page === "home") return s.show_in_home === true;
     return s.show_in_products !== false;

@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button";
 import ProductCard from "../shared/ProductCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCmsTexts } from "@/components/cms/cmsHelpers";
+import { normalizeEntityList } from "@/lib/entity-list";
 
 export default function FeaturedProducts() {
   const { t } = useCmsTexts();
-  const { data: products, isLoading } = useQuery({
+  const { data: productsData, isLoading } = useQuery({
     queryKey: ["featured-products"],
     queryFn: () => base44.entities.Product.filter({ is_featured: true }, "-created_date", 8),
     initialData: [],
   });
+  const products = normalizeEntityList(productsData);
 
   return (
     <section className="py-20 md:py-28 bg-white">

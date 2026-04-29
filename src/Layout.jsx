@@ -18,6 +18,19 @@ const NAV_ITEMS = [
 { label: "Te ayudamos a elegir", page: "Wizard" },
 { label: "Reservar instalación", page: "Reservar" }];
 
+const DEFAULT_SERVICE_AREAS = ["Madrid y alrededores", "Barcelona y alrededores", "Valencia y alrededores", "Sevilla y alrededores"];
+
+function normalizeServiceAreas(value) {
+  if (Array.isArray(value)) return value.filter(Boolean);
+  if (typeof value === "string") {
+    return value
+      .split(/\r?\n|,/)
+      .map((zone) => zone.trim())
+      .filter(Boolean);
+  }
+  return [];
+}
+
 function useCart() {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -97,7 +110,8 @@ export default function Layout({ children, currentPageName }) {
   const email = settings?.email || "";
   const schedule = settings?.schedule || "";
   const serviceArea = settings?.service_area || "";
-  const serviceAreasList = settings?.service_areas_list?.length ? settings.service_areas_list : ["Madrid y alrededores", "Barcelona y alrededores", "Valencia y alrededores", "Sevilla y alrededores"];
+  const configuredServiceAreas = normalizeServiceAreas(settings?.service_areas_list);
+  const serviceAreasList = configuredServiceAreas.length ? configuredServiceAreas : DEFAULT_SERVICE_AREAS;
   const footerText = settings?.footer_text || `(c) ${new Date().getFullYear()} ${siteName}. Todos los derechos reservados.`;
   const logoUrl = settings?.logo_url;
   const phoneHref = `tel:+${phone.replace(/\D/g, "")}`;
