@@ -1,0 +1,164 @@
+{
+  "name": "ReservaInstalacion",
+  "type": "object",
+  "properties": {
+    "estado": {
+      "type": "string",
+      "enum": [
+        "pendiente",
+        "confirmada",
+        "cancelada"
+      ],
+      "default": "pendiente",
+      "description": "Estado de la reserva"
+    },
+    "tipoServicio": {
+      "type": "string",
+      "enum": [
+        "Instalaci\u00f3n Split 1x1",
+        "Instalaci\u00f3n Multisplit",
+        "Mantenimiento/Limpieza",
+        "Visita t\u00e9cnica"
+      ],
+      "description": "Tipo de servicio solicitado"
+    },
+    "fecha": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de la instalaci\u00f3n"
+    },
+    "franja": {
+      "type": "string",
+      "enum": [
+        "Ma\u00f1ana (9\u201314)",
+        "Tarde (15\u201319)"
+      ],
+      "description": "Franja horaria"
+    },
+    "nombre": {
+      "type": "string",
+      "description": "Nombre del cliente"
+    },
+    "telefono": {
+      "type": "string",
+      "description": "Tel\u00e9fono de contacto"
+    },
+    "email": {
+      "type": "string",
+      "description": "Email del cliente"
+    },
+    "direccion": {
+      "type": "string",
+      "description": "Direcci\u00f3n completa"
+    },
+    "codigoPostal": {
+      "type": "string",
+      "description": "C\u00f3digo postal"
+    },
+    "ciudad": {
+      "type": "string",
+      "description": "Ciudad"
+    },
+    "tipoVivienda": {
+      "type": "string",
+      "enum": [
+        "Piso",
+        "Chalet",
+        "Local",
+        "Oficina"
+      ],
+      "description": "Tipo de vivienda"
+    },
+    "plantaAltura": {
+      "type": "string",
+      "description": "Planta o altura (opcional)"
+    },
+    "ascensor": {
+      "type": "string",
+      "enum": [
+        "S\u00ed",
+        "No",
+        "No aplica"
+      ],
+      "description": "Disponibilidad de ascensor"
+    },
+    "accesoExterior": {
+      "type": "string",
+      "enum": [
+        "Balc\u00f3n",
+        "Patio interior",
+        "Fachada",
+        "Azotea",
+        "No lo s\u00e9"
+      ],
+      "description": "Tipo de acceso al exterior"
+    },
+    "equipoComprado": {
+      "type": "string",
+      "enum": [
+        "S\u00ed",
+        "No"
+      ],
+      "description": "Si ya tiene equipo comprado"
+    },
+    "marcaModelo": {
+      "type": "string",
+      "description": "Marca y modelo del equipo"
+    },
+    "unidadesInteriores": {
+      "type": "number",
+      "description": "N\u00famero de unidades interiores"
+    },
+    "distanciaAprox": {
+      "type": "string",
+      "enum": [
+        "<3m",
+        "3\u20135m",
+        "5\u201310m",
+        ">10m",
+        "No lo s\u00e9"
+      ],
+      "description": "Distancia aproximada entre unidades"
+    },
+    "preinstalacion": {
+      "type": "string",
+      "enum": [
+        "S\u00ed",
+        "No",
+        "No lo s\u00e9"
+      ],
+      "description": "Tiene preinstalaci\u00f3n"
+    },
+    "comentarios": {
+      "type": "string",
+      "description": "Comentarios adicionales"
+    },
+    "fotos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs de fotos subidas"
+    },
+    "aceptaCondiciones": {
+      "type": "boolean",
+      "description": "Acepta t\u00e9rminos y condiciones"
+    }
+  },
+  "required": [
+    "tipoServicio",
+    "fecha",
+    "franja",
+    "nombre",
+    "telefono",
+    "email",
+    "direccion",
+    "codigoPostal",
+    "ciudad",
+    "tipoVivienda",
+    "ascensor",
+    "accesoExterior",
+    "equipoComprado",
+    "aceptaCondiciones"
+  ]
+}

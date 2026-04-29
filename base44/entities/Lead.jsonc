@@ -1,0 +1,86 @@
+{
+  "name": "Lead",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "phone": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "message": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "contact_form",
+        "wizard",
+        "product_page",
+        "whatsapp",
+        "phone"
+      ],
+      "default": "contact_form"
+    },
+    "wizard_data": {
+      "type": "object",
+      "properties": {
+        "rooms": {
+          "type": "number"
+        },
+        "area_m2": {
+          "type": "string"
+        },
+        "sun_exposure": {
+          "type": "string"
+        },
+        "province": {
+          "type": "string"
+        },
+        "exterior_unit_space": {
+          "type": "string"
+        },
+        "preferences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "scheduled_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Fecha de visita seleccionada en el wizard"
+    },
+    "scheduled_slot": {
+      "type": "string",
+      "enum": [
+        "Ma\u00f1ana (9\u201314)",
+        "Tarde (15\u201319)"
+      ],
+      "description": "Franja horaria seleccionada"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "new",
+        "contacted",
+        "qualified",
+        "converted",
+        "lost"
+      ],
+      "default": "new"
+    }
+  },
+  "required": [
+    "name",
+    "phone"
+  ]
+}

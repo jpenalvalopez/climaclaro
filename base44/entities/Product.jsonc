@@ -1,0 +1,179 @@
+{
+  "name": "Product",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Product name (full name including power, e.g. MSZ-AP25VGK 2.5kW)"
+    },
+    "model_code": {
+      "type": "string",
+      "description": "Model code shared across power variants (e.g. MSZ-AP)"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL-friendly slug"
+    },
+    "product_family": {
+      "type": "string",
+      "enum": [
+        "gama_domestica",
+        "gama_comercial",
+        "gama_otros"
+      ],
+      "description": "Main product family grouping"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "monosplit",
+        "multisplit_2x1",
+        "multisplit_3x1",
+        "multisplit_4x1",
+        "multisplit_5x1",
+        "conductos",
+        "cassette",
+        "portatil",
+        "accesorio"
+      ],
+      "description": "Product category"
+    },
+    "brand": {
+      "type": "string",
+      "description": "Brand name"
+    },
+    "price": {
+      "type": "number",
+      "description": "Precio PVP (precio tachado)"
+    },
+    "sale_price": {
+      "type": "number",
+      "description": "Precio en oferta."
+    },
+    "price_with_installation": {
+      "type": "number",
+      "description": "(Obsoleto) Precio con instalaci\u00f3n incluida"
+    },
+    "power_kw": {
+      "type": "number",
+      "description": "Power in kW"
+    },
+    "frigorias": {
+      "type": "number",
+      "description": "Frigor\u00edas"
+    },
+    "area_min_m2": {
+      "type": "number",
+      "description": "Minimum area coverage in m\u00b2"
+    },
+    "area_max_m2": {
+      "type": "number",
+      "description": "Maximum area coverage in m\u00b2"
+    },
+    "energy_rating": {
+      "type": "string",
+      "enum": [
+        "A+++",
+        "A++",
+        "A+",
+        "A",
+        "B",
+        "C"
+      ],
+      "description": "Energy efficiency rating"
+    },
+    "noise_db": {
+      "type": "number",
+      "description": "Noise level in dB"
+    },
+    "has_wifi": {
+      "type": "boolean",
+      "default": false,
+      "description": "Has WiFi connectivity"
+    },
+    "image_url": {
+      "type": "string",
+      "description": "Main product image URL"
+    },
+    "image_alt": {
+      "type": "string",
+      "description": "ALT text for main product image (SEO)"
+    },
+    "image_gallery": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Additional image URLs"
+    },
+    "description": {
+      "type": "string",
+      "description": "Product description"
+    },
+    "specs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Technical specifications"
+    },
+    "installation_included": {
+      "type": "boolean",
+      "default": false
+    },
+    "installation_details": {
+      "type": "string",
+      "description": "What standard installation includes"
+    },
+    "extras": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number"
+          }
+        }
+      },
+      "description": "Available extras/add-ons"
+    },
+    "is_featured": {
+      "type": "boolean",
+      "default": false
+    },
+    "is_top_seller": {
+      "type": "boolean",
+      "default": false
+    },
+    "stock": {
+      "type": "number",
+      "default": 0
+    },
+    "active": {
+      "type": "boolean",
+      "default": true,
+      "description": "Is the product active?"
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 100,
+      "description": "Display order"
+    }
+  },
+  "required": [
+    "name",
+    "category",
+    "price"
+  ]
+}

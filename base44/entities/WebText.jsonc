@@ -1,0 +1,60 @@
+{
+  "name": "WebText",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "string",
+      "enum": [
+        "global",
+        "home",
+        "products",
+        "product_detail",
+        "services",
+        "service_detail",
+        "booking",
+        "cart",
+        "checkout",
+        "about",
+        "contact",
+        "wizard",
+        "footer"
+      ]
+    },
+    "key": {
+      "type": "string",
+      "description": "Clave \u00fanica (ej: global.nav.products)"
+    },
+    "value": {
+      "type": "string",
+      "description": "Valor del texto"
+    },
+    "description": {
+      "type": "string",
+      "description": "Descripci\u00f3n interna para el editor"
+    },
+    "type": {
+      "type": "string",
+      "enum": [
+        "text",
+        "button",
+        "label",
+        "placeholder",
+        "seo_title",
+        "seo_description"
+      ],
+      "default": "text"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 100
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ]
+}

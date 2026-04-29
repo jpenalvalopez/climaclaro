@@ -1,0 +1,36 @@
+{
+  "name": "WizardOption",
+  "type": "object",
+  "properties": {
+    "wizard_key": {
+      "type": "string"
+    },
+    "step_id": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string",
+      "description": "Valor guardado en answers, siempre string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "desc": {
+      "type": "string"
+    },
+    "order": {
+      "type": "number",
+      "default": 100
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "wizard_key",
+    "step_id",
+    "value",
+    "label"
+  ]
+}

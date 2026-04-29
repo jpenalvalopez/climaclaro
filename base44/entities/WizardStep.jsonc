@@ -1,0 +1,42 @@
+{
+  "name": "WizardStep",
+  "type": "object",
+  "properties": {
+    "wizard_key": {
+      "type": "string",
+      "description": "Relaci\u00f3n con Wizard.key"
+    },
+    "step_id": {
+      "type": "string",
+      "description": "Identificador del paso, ej: rooms, area, sun"
+    },
+    "question": {
+      "type": "string"
+    },
+    "icon": {
+      "type": "string",
+      "description": "Nombre de icono lucide-react, ej: Home, Square, Sun"
+    },
+    "multi": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": true
+    },
+    "order": {
+      "type": "number"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    }
+  },
+  "required": [
+    "wizard_key",
+    "step_id",
+    "question",
+    "order"
+  ]
+}

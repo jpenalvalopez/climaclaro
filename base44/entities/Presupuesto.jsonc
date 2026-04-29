@@ -1,0 +1,51 @@
+{
+  "name": "Presupuesto",
+  "type": "object",
+  "properties": {
+    "nombre": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "telefono": {
+      "type": "string"
+    },
+    "ciudad": {
+      "type": "string"
+    },
+    "service_id": {
+      "type": "string"
+    },
+    "service_name": {
+      "type": "string"
+    },
+    "descripcion": {
+      "type": "string",
+      "description": "Descripci\u00f3n de la instalaci\u00f3n o necesidad"
+    },
+    "fotos": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URLs de fotos o planos adjuntos"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "nuevo",
+        "en_revision",
+        "presupuestado",
+        "aceptado",
+        "descartado"
+      ],
+      "default": "nuevo"
+    }
+  },
+  "required": [
+    "nombre",
+    "telefono",
+    "service_id"
+  ]
+}

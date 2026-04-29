@@ -1,0 +1,10 @@
+.git
+.gitignore
+.agents
+.vs
+node_modules
+dist
+npm-debug.log*
+.env
+.env.*
+README.md

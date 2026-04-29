@@ -1,0 +1,64 @@
+{
+  "name": "LeadLanding",
+  "type": "object",
+  "properties": {
+    "nombre": {
+      "type": "string"
+    },
+    "telefono": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string"
+    },
+    "tipo_equipo": {
+      "type": "string",
+      "enum": [
+        "Split Pared",
+        "Multisplit",
+        "Port\u00e1til",
+        "Cassette",
+        "Conductos",
+        "No lo s\u00e9, necesito asesoramiento"
+      ]
+    },
+    "metros_cuadrados": {
+      "type": "string",
+      "enum": [
+        "Menos de 20 m\u00b2",
+        "20\u201335 m\u00b2",
+        "35\u201350 m\u00b2",
+        "50\u201370 m\u00b2",
+        "M\u00e1s de 70 m\u00b2"
+      ]
+    },
+    "disponibilidad": {
+      "type": "string",
+      "enum": [
+        "Ma\u00f1anas (9:00\u201314:00)",
+        "Tardes (14:00\u201319:00)",
+        "Cualquier horario"
+      ]
+    },
+    "mensaje": {
+      "type": "string"
+    },
+    "origen": {
+      "type": "string"
+    },
+    "estado": {
+      "type": "string",
+      "enum": [
+        "nuevo",
+        "contactado",
+        "presupuestado",
+        "cerrado"
+      ],
+      "default": "nuevo"
+    }
+  },
+  "required": [
+    "nombre",
+    "telefono"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "Wizard",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Clave \u00fanica, ej: home_wizard"
+    },
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "result_title": {
+      "type": "string"
+    },
+    "result_subtitle": {
+      "type": "string"
+    },
+    "cta_submit_label": {
+      "type": "string"
+    },
+    "cta_catalog_label": {
+      "type": "string"
+    },
+    "max_recommendations": {
+      "type": "number",
+      "default": 3
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 100
+    }
+  },
+  "required": [
+    "key"
+  ]
+}

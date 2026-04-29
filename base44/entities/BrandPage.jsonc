@@ -1,0 +1,82 @@
+{
+  "name": "BrandPage",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Nombre de la marca"
+    },
+    "slug": {
+      "type": "string",
+      "description": "URL slug \u00fanico, ej: mitsubishi"
+    },
+    "logo_url": {
+      "type": "string",
+      "description": "URL del logo de la marca"
+    },
+    "hero_image_url": {
+      "type": "string",
+      "description": "URL imagen de fondo del hero"
+    },
+    "hero_title": {
+      "type": "string",
+      "description": "T\u00edtulo principal del hero"
+    },
+    "hero_subtitle": {
+      "type": "string",
+      "description": "Subt\u00edtulo del hero"
+    },
+    "intro_title": {
+      "type": "string",
+      "description": "T\u00edtulo del bloque intro"
+    },
+    "intro_text": {
+      "type": "string",
+      "description": "Texto del bloque intro"
+    },
+    "configurator_title": {
+      "type": "string",
+      "description": "T\u00edtulo del bloque configurador"
+    },
+    "configurator_subtitle": {
+      "type": "string",
+      "description": "Subt\u00edtulo/descripci\u00f3n del configurador"
+    },
+    "configurator_hint1": {
+      "type": "string",
+      "description": "Primera pista de informaci\u00f3n del configurador"
+    },
+    "configurator_hint2": {
+      "type": "string",
+      "description": "Segunda pista de informaci\u00f3n del configurador"
+    },
+    "cta_title": {
+      "type": "string",
+      "description": "T\u00edtulo del CTA final"
+    },
+    "cta_text": {
+      "type": "string",
+      "description": "Texto del CTA final"
+    },
+    "seo_title": {
+      "type": "string",
+      "description": "T\u00edtulo SEO (meta title)"
+    },
+    "seo_description": {
+      "type": "string",
+      "description": "Meta descripci\u00f3n SEO"
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "sort_order": {
+      "type": "number",
+      "default": 100
+    }
+  },
+  "required": [
+    "name",
+    "slug"
+  ]
+}
