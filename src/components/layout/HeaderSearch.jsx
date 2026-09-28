@@ -25,7 +25,7 @@ const CATEGORY_LABELS = {
   accesorio: "Accesorio",
 };
 
-export default function HeaderSearch() {
+export default function HeaderSearch({ buttonClassName = "inline-flex h-11 w-11 items-center justify-center rounded-xl hover:bg-[#F0F4F8] active:bg-[#E0EAF5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00509E]/35 transition-colors" }) {
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [showInput, setShowInput] = useState(false);
@@ -114,8 +114,9 @@ export default function HeaderSearch() {
     <div ref={containerRef} className="relative">
       {!showInput ? (
         <button
+          type="button"
           onClick={handleOpen}
-          className="p-2 rounded-lg hover:bg-[#F0F4F8] transition-colors"
+          className={buttonClassName}
           aria-label="Buscar"
         >
           <Search className="w-5 h-5 text-[#333]" />

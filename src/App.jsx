@@ -10,6 +10,7 @@ import MarcaDetalle from './pages/MarcaDetalle';
 import ModelPageDetalle from './pages/ModelPageDetalle';
 import ModelDetail from './pages/ModelDetail';
 import Presupuesto from './pages/Presupuesto';
+import QuotePublic from './pages/QuotePublic';
 import { AuthProvider, useAuth } from '@/lib/AuthContext';
 
 const { Pages, Layout, mainPage } = pagesConfig;
@@ -59,6 +60,7 @@ const AuthenticatedApp = () => {
       <Route path="/modelo/:slug" element={<LayoutWrapper currentPageName="ModelPageDetalle"><ModelPageDetalle /></LayoutWrapper>} />
       <Route path="/ModelDetail" element={<LayoutWrapper currentPageName="ModelDetail"><ModelDetail /></LayoutWrapper>} />
       <Route path="/presupuesto" element={<LayoutWrapper currentPageName="Presupuesto"><Presupuesto /></LayoutWrapper>} />
+      <Route path="/quote/:id" element={<LayoutWrapper currentPageName="QuotePublic"><QuotePublic /></LayoutWrapper>} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

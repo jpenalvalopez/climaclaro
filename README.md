@@ -1,39 +1,60 @@
-**Welcome to your Base44 project** 
+# ClimaClaro
 
-**About**
+ClimaClaro es la web/app pública para venta e instalación de aire acondicionado en Madrid.
 
-View and Edit  your app on [Base44.com](http://Base44.com) 
+Su objetivo es simplificar al cliente todo el proceso:
 
-This project contains everything you need to run your app locally.
+- Elegir equipo.
+- Entender la instalación.
+- Solicitar presupuesto.
+- Reservar fecha.
+- Tener una experiencia clara y profesional.
 
-**Edit the code in your local development environment**
+## Relación con ClimaPlan
 
-Any change pushed to the repo will also be reflected in the Base44 Builder.
+ClimaClaro está relacionado con ClimaPlan, pero es un proyecto independiente.
 
-**Prerequisites:** 
+- ClimaClaro: web pública comercial.
+- ClimaPlan: app interna operativa.
 
-1. Clone the repository using the project's Git URL 
-2. Navigate to the project directory
-3. Install dependencies: `npm install`
-4. Create an `.env.local` file and set the right environment variables
+Cada uno tiene:
+- Su propio despliegue.
+- Su propia base de datos.
+- Su propia lógica de datos.
 
-```
-VITE_BASE44_APP_ID=your_app_id
-VITE_BASE44_APP_BASE_URL=your_backend_url
+No se deben fusionar bases de datos ni compartir tablas.
 
-e.g.
-VITE_BASE44_APP_ID=cbef744a8545c389ef439ea6
-VITE_BASE44_APP_BASE_URL=https://my-to-do-list-81bfaad7.base44.app
-```
+Cualquier comunicación futura debe hacerse mediante:
+- API.
+- Webhooks.
+- Jobs documentados.
 
-Run the app: `npm run dev`
+## Estado actual
 
-**Publish your changes**
+ClimaClaro ya está desplegado y funcionando.
 
-Open [Base44.com](http://Base44.com) and click on Publish.
+Tiene:
+- Web pública.
+- Wizard.
+- Calendario.
+- Base de datos propia.
 
-**Docs & Support**
+## Objetivo comercial
 
-Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
+Convertir visitantes en clientes mediante:
 
-Support: [https://app.base44.com/support](https://app.base44.com/support)
+- Mensaje claro.
+- Diseño profesional.
+- Wizard de ayuda.
+- Productos bien presentados.
+- Presupuestos claros.
+- Reserva de instalación sencilla.
+
+## Documentación importante
+
+- docs/PROJECT_CONTEXT.md
+- docs/CLIMACLARO.md
+- docs/BUSINESS_RULES.md
+- docs/DATABASE.md
+- docs/DESIGN_SYSTEM.md
+- docs/CODEX_WORKFLOW.md

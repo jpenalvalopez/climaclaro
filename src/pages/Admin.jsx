@@ -31,6 +31,7 @@ import AdminBrandPages from "../components/admin/AdminBrandPages";
 import AdminQuoteWizard from "../components/admin/AdminQuoteWizard";
 import AdminPromoSlides from "../components/admin/AdminPromoSlides";
 import AdminModelPages from "../components/admin/AdminModelPages";
+import AdminQuotes from "../components/admin/AdminQuotes";
 
 const NAV = [
   { key: "dashboard", label: "Dashboard", icon: LayoutDashboard },
@@ -41,6 +42,7 @@ const NAV = [
   { key: "brand_wizard",   label: "Wizard marca",   icon: Wand2 },
   { key: "quote_wizard",  label: "Wizard presupuesto", icon: Wand2 },
   { key: "reservas",  label: "Reservas",   icon: Calendar },
+  { key: "quotes",    label: "Presupuestos", icon: FileText },
   { key: "orders",    label: "Pedidos",    icon: ShoppingCart },
   { key: "leads",     label: "Leads",      icon: Users },
   { key: "reviews",   label: "Reseñas",    icon: Star },
@@ -204,6 +206,7 @@ export default function Admin() {
           {activeTab === "products" && <AdminProducts />}
           {activeTab === "services" && <AdminServices />}
           {activeTab === "reservas" && <AdminReservas />}
+          {activeTab === "quotes" && <AdminQuotes />}
           {activeTab === "orders" && <AdminOrders />}
           {activeTab === "leads" && <AdminLeads />}
           {activeTab === "reviews" && <AdminReviews />}

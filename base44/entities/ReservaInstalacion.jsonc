@@ -140,6 +140,10 @@
       },
       "description": "URLs de fotos subidas"
     },
+    "quote_id": {
+      "type": "string",
+      "description": "Presupuesto profesional aceptado que origina la reserva"
+    },
     "aceptaCondiciones": {
       "type": "boolean",
       "description": "Acepta t\u00e9rminos y condiciones"

@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
+import { getQuoteForBooking } from "@/api/publicQuotesApi";
 import UbicacionStep from "@/components/reservar/UbicacionStep";
 import FechaStep from "@/components/reservar/FechaStep";
 import ContactoStep from "@/components/reservar/ContactoStep";
@@ -41,6 +42,9 @@ const formatLabel = (sid) =>
   STEP_LABELS[sid] || (sid.charAt(0).toUpperCase() + sid.slice(1).replace(/_/g, " "));
 
 export default function BookingWizard() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const quoteId = urlParams.get("quote_id");
+  const quoteToken = urlParams.get("token");
   const [stepIndex, setStepIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [success, setSuccess] = useState(false);
@@ -93,6 +97,40 @@ export default function BookingWizard() {
     queryFn: () => base44.entities.ReservaInstalacion.list("-created_date", 500),
   });
 
+  const { data: bookingQuote, isFetched: isBookingQuoteFetched, error: bookingQuoteError } = useQuery({
+    queryKey: ["booking_quote", quoteId, quoteToken],
+    queryFn: () => getQuoteForBooking(quoteId, quoteToken),
+    enabled: !!quoteId,
+    retry: false,
+  });
+  const acceptedQuote = bookingQuote || null;
+  const quoteRequiresAcceptance = !!quoteId && isBookingQuoteFetched && String(bookingQuoteError?.message || "").includes("todavia no esta aceptado");
+  const quoteLinkInvalid = !!quoteId && isBookingQuoteFetched && !!bookingQuoteError && !quoteRequiresAcceptance;
+  const quoteValidationPending = !!quoteId && !isBookingQuoteFetched;
+  const quoteBlocksReservation = quoteRequiresAcceptance || quoteLinkInvalid || quoteValidationPending;
+
+  useEffect(() => {
+    if (!acceptedQuote) return;
+    setAnswers(prev => ({
+      ...prev,
+      contacto: {
+        nombre: prev.contacto?.nombre || acceptedQuote.customer_name || "",
+        telefono: prev.contacto?.telefono || acceptedQuote.customer_phone || "",
+        email: prev.contacto?.email || acceptedQuote.customer_email || "",
+        aceptaCondiciones: prev.contacto?.aceptaCondiciones || false,
+      },
+      ubicacion: {
+        direccion: prev.ubicacion?.direccion || acceptedQuote.customer_address || "",
+        codigoPostal: prev.ubicacion?.codigoPostal || acceptedQuote.customer_postal_code || "",
+        ciudad: prev.ubicacion?.ciudad || acceptedQuote.customer_city || "Madrid",
+        tipoVivienda: prev.ubicacion?.tipoVivienda || "",
+        plantaAltura: prev.ubicacion?.plantaAltura || "",
+        ascensor: prev.ubicacion?.ascensor || "",
+        accesoExterior: prev.ubicacion?.accesoExterior || "",
+      },
+    }));
+  }, [acceptedQuote]);
+
   const step = steps[stepIndex];
   const isLastStep = stepIndex === steps.length - 1;
   const isSpecial = step && SPECIAL_STEP_IDS.includes(step.step_id);
@@ -132,6 +170,12 @@ export default function BookingWizard() {
 
   const submitMutation = useMutation({
     mutationFn: async () => {
+      if (quoteRequiresAcceptance) {
+        throw new Error("Este presupuesto todavia no esta aceptado. Para reservar instalacion primero debes aceptar el presupuesto.");
+      }
+      if (quoteLinkInvalid || quoteValidationPending) {
+        throw new Error("El enlace de reserva no es valido. Abre la reserva desde el presupuesto aceptado.");
+      }
       const f = answers.fecha || {};
       const c = answers.contacto || {};
       const u = answers.ubicacion || {};
@@ -165,11 +209,15 @@ export default function BookingWizard() {
         equipoComprado: "No",
         aceptaCondiciones: true,
         estado: "pendiente",
+        quote_id: acceptedQuote?.id || undefined,
+        comentarios: acceptedQuote ? `Reserva creada desde presupuesto aceptado ${acceptedQuote.quote_number}.` : undefined,
       });
 
-      base44.functions
-        .invoke("enviarReservaAClimaplan", { reserva: { ...reserva, fecha: dateStr } })
-        .catch(() => {});
+      if (!acceptedQuote) {
+        base44.functions
+          .invoke("enviarReservaAClimaplan", { reserva: { ...reserva, fecha: dateStr } })
+          .catch(() => {});
+      }
       return reserva;
     },
     onSuccess: () => {
@@ -275,6 +323,14 @@ export default function BookingWizard() {
             <p className="text-gray-500 mt-2 text-sm">{config.subtitle}</p>
           )}
         </div>
+
+        {(quoteRequiresAcceptance || quoteLinkInvalid) && (
+          <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 px-5 py-4 text-sm text-amber-900">
+            {quoteRequiresAcceptance
+              ? "Este presupuesto todavia no esta aceptado. Para reservar instalacion primero debes aceptar el presupuesto."
+              : "El enlace de reserva no es valido. Abre la reserva desde el presupuesto aceptado."}
+          </div>
+        )}
 
         {/* Progress card */}
         <div className="bg-white rounded-2xl shadow-sm p-5 mb-6">
@@ -410,7 +466,7 @@ export default function BookingWizard() {
             onClick={() =>
               isLastStep ? submitMutation.mutate() : setStepIndex((s) => s + 1)
             }
-            disabled={!canAdvance || submitMutation.isPending}
+            disabled={!canAdvance || submitMutation.isPending || quoteBlocksReservation}
             className="bg-[#00509E] hover:bg-[#003366] text-white rounded-full px-6"
           >
             {submitMutation.isPending

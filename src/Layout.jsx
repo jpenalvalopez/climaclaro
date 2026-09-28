@@ -18,6 +18,9 @@ const NAV_ITEMS = [
 { label: "Te ayudamos a elegir", page: "Wizard" },
 { label: "Reservar instalación", page: "Reservar" }];
 
+const headerIconButtonClass =
+  "relative inline-flex h-11 w-11 md:h-12 md:w-12 lg:h-10 lg:w-10 items-center justify-center rounded-xl hover:bg-[#F0F4F8] active:bg-[#E0EAF5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00509E]/35 transition-colors";
+
 function useCart() {
   const [count, setCount] = useState(0);
   useEffect(() => {
@@ -142,9 +145,9 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Main header */}
       <header className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md shadow-md" : "bg-white"}`}>
-        <div className="max-w-7xl mx-auto px-4 md:px-6 h-16 md:h-[72px] flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 md:px-6 h-[72px] flex items-center justify-between">
           <Link to={createPageUrl("Home")} className="flex items-center shrink-0">
-            {logoUrl && <img src={logoUrl} alt={siteName} className="h-[38px] md:h-[52px] w-auto object-contain" />}
+            {logoUrl && <img src={logoUrl} alt={siteName} className="h-[34px] md:h-[52px] w-auto object-contain" />}
           </Link>
           <nav className="hidden lg:flex items-center gap-0">
             {NAV_ITEMS.map((item) =>
@@ -153,27 +156,27 @@ export default function Layout({ children, currentPageName }) {
             </Link>
             )}
           </nav>
-          <div className="flex items-center gap-1">
-            <HeaderSearch />
+          <div className="flex items-center gap-1 md:gap-1.5">
+            <HeaderSearch buttonClassName={headerIconButtonClass} />
             <Link to="/presupuesto" className="hidden xl:inline-flex bg-[#00509E] hover:bg-[#003d7a] text-white rounded-full px-4 text-sm font-semibold shadow-lg shadow-[#00509E]/20 h-9 items-center whitespace-nowrap">
               Pide presupuesto
             </Link>
-            <Link to={createPageUrl("Cart")} className="relative p-2 rounded-lg hover:bg-[#F0F4F8] transition-colors">
+            <Link to={createPageUrl("Cart")} className={headerIconButtonClass} aria-label={`Carrito${cartCount > 0 ? `, ${cartCount} productos` : ""}`}>
               <ShoppingCart className="w-5 h-5 text-[#333]" />
               {cartCount > 0 &&
-              <span className="absolute -top-0.5 -right-0.5 w-5 h-5 bg-[#00509E] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+              <span className="absolute right-1 top-1 w-5 h-5 bg-[#00509E] text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                   {cartCount}
                 </span>
               }
             </Link>
-            <Link to={createPageUrl("MiPerfil")} className="p-2 rounded-lg hover:bg-[#F0F4F8] transition-colors" title="Mi perfil">
+            <Link to={createPageUrl("MiPerfil")} className={headerIconButtonClass} title="Mi perfil" aria-label="Mi perfil">
               <div className="w-8 h-8 rounded-full bg-[#e0eaf5] flex items-center justify-center">
                 <UserCircle2 className="w-5 h-5 text-[#00509E]" />
               </div>
             </Link>
             <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
-              <SheetTrigger asChild className="lg:hidden">
-                <button className="p-2 rounded-lg hover:bg-[#F0F4F8] transition-colors">
+              <SheetTrigger asChild>
+                <button type="button" className={`${headerIconButtonClass} lg:hidden`} aria-label="Abrir menú">
                   <Menu className="w-5 h-5 text-[#333]" />
                 </button>
               </SheetTrigger>
