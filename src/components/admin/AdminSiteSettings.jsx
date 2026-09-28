@@ -42,7 +42,12 @@ export default function AdminSiteSettings() {
 
   const handleUpload = async (field, file) => {
     setUploading(u => ({ ...u, [field]: true }));
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_web_asset",
+      kind: field.includes("logo") || field.includes("favicon") ? "icons" : "home",
+      entityId: form?.id,
+    });
     setForm(f => ({ ...f, [field]: file_url }));
     setUploading(u => ({ ...u, [field]: false }));
   };

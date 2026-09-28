@@ -75,7 +75,13 @@ export default function AdminServices() {
 
   const handleUpload = async (file) => {
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_service_asset",
+      serviceSlug: editService.slug || slugify(editService.title || "servicio"),
+      kind: "hero",
+      entityId: editService.id,
+    });
     set("image_url", file_url);
     setUploading(false);
   };

@@ -20,6 +20,16 @@ const BRAND_EMPTY = {
   active: true, sort_order: 100
 };
 
+function storageSlug(value, fallback = "general") {
+  return String(value || fallback)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || fallback;
+}
+
 const CATEGORY_LABELS = {
   monosplit: "Monosplit", multisplit: "Multisplit", conductos: "Conductos",
   cassette: "Cassette", portatil: "Portátil", accesorio: "Accesorio"
@@ -283,14 +293,26 @@ function BrandForm({ brand, onChange, onSave, saving }) {
 
   const uploadLogo = async (file) => {
     setUploadingLogo(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_brand_asset",
+      brandSlug: storageSlug(brand.slug || brand.name),
+      kind: "logo",
+      entityId: brand.id,
+    });
     set("logo_url", file_url);
     setUploadingLogo(false);
   };
 
   const uploadHero = async (file) => {
     setUploadingHero(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_brand_asset",
+      brandSlug: storageSlug(brand.slug || brand.name),
+      kind: "hero",
+      entityId: brand.id,
+    });
     set("hero_image_url", file_url);
     setUploadingHero(false);
   };
@@ -424,7 +446,14 @@ function ProductQuickForm({ product, onChange, onSave, saving }) {
 
   const uploadImg = async (file) => {
     setUploadingImg(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_product_image",
+      kind: "main",
+      brandSlug: storageSlug(product.brand),
+      productSlug: storageSlug(product.slug || product.model_code || product.name),
+      entityId: product.id,
+    });
     set("image_url", file_url);
     setUploadingImg(false);
   };

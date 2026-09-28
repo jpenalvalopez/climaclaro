@@ -37,3 +37,18 @@ Open [Base44.com](http://Base44.com) and click on Publish.
 Documentation: [https://docs.base44.com/Integrations/Using-GitHub](https://docs.base44.com/Integrations/Using-GitHub)
 
 Support: [https://app.base44.com/support](https://app.base44.com/support)
+# Clima Claro
+
+## Base de datos propia
+
+El proyecto esta preparado para usar Neon Postgres mediante `DATABASE_URL` y
+desplegar en Cloud Run sin Cloud SQL.
+
+Guia: [docs/neon-cloud-run.md](docs/neon-cloud-run.md)
+
+## Archivos
+
+La gestion de imagenes y PDFs esta preparada para Google Cloud Storage con dos
+buckets: uno publico para assets web y otro privado para documentos de clientes.
+
+Guia: [docs/google-cloud-storage-files.md](docs/google-cloud-storage-files.md)

@@ -9,12 +9,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  getLocalAdminUser,
-  isLocalAdminLoginEnabled,
-  loginLocalAdmin,
-  logoutLocalAdmin,
-} from "@/lib/local-admin-auth";
 import AdminProducts from "../components/admin/AdminProducts";
 import AdminLeads from "../components/admin/AdminLeads";
 import AdminOrders from "../components/admin/AdminOrders";
@@ -60,15 +54,13 @@ export default function Admin() {
   const [localLoginError, setLocalLoginError] = useState("");
 
   useEffect(() => {
-    const localAdmin = getLocalAdminUser();
-    if (localAdmin) {
-      setUser(localAdmin);
-      return;
-    }
-    setUser(null);
+    fetch("/api/admin/me", { credentials: "include" })
+      .then((response) => response.ok ? response.json() : null)
+      .then((currentUser) => setUser(currentUser))
+      .catch(() => setUser(null));
   }, []);
 
-  const canLoadAdminData = user?.role === "admin" && !user?.isLocalAdmin;
+  const canLoadAdminData = user?.role === "admin";
   const { data: products = [] } = useQuery({ queryKey: ["products"], queryFn: () => base44.entities.Product.list(), enabled: canLoadAdminData });
   const { data: leads = [] } = useQuery({ queryKey: ["leads"], queryFn: () => base44.entities.Lead.list(), enabled: canLoadAdminData });
   const { data: orders = [] } = useQuery({ queryKey: ["orders"], queryFn: () => base44.entities.Order.list(), enabled: canLoadAdminData });
@@ -80,17 +72,24 @@ export default function Admin() {
   }
 
   if (!user) {
-    const handleLocalLogin = (event) => {
+    const handleLocalLogin = async (event) => {
       event.preventDefault();
       setLocalLoginError("");
 
-      const result = loginLocalAdmin(localPassword);
-      if (!result.ok) {
-        setLocalLoginError(result.message);
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password: localPassword }),
+      });
+      const data = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setLocalLoginError(data?.message || "No se ha podido iniciar sesión.");
         return;
       }
 
-      setUser(getLocalAdminUser());
+      setUser(data);
     };
 
     return (
@@ -99,21 +98,19 @@ export default function Admin() {
           <AlertCircle className="w-14 h-14 text-[#00509E]" />
           <h2 className="text-2xl font-bold text-[#003366]" style={{ fontFamily: "'Poppins', sans-serif" }}>Inicia sesión para entrar</h2>
           <p className="text-gray-500 text-sm">El panel de administración requiere una cuenta con permisos de administrador.</p>
-          {isLocalAdminLoginEnabled() && (
-            <form onSubmit={handleLocalLogin} className="w-full space-y-3">
-              <Input
-                type="password"
-                value={localPassword}
-                onChange={(event) => setLocalPassword(event.target.value)}
-                placeholder="Contraseña local"
-                className="h-11 text-center"
-              />
-              {localLoginError && <p className="text-xs text-red-500">{localLoginError}</p>}
-              <Button type="submit" className="w-full bg-[#00509E] hover:bg-[#003366] text-white rounded-full">
-                Entrar en local
-              </Button>
-            </form>
-          )}
+          <form onSubmit={handleLocalLogin} className="w-full space-y-3">
+            <Input
+              type="password"
+              value={localPassword}
+              onChange={(event) => setLocalPassword(event.target.value)}
+              placeholder="Contraseña de administrador"
+              className="h-11 text-center"
+            />
+            {localLoginError && <p className="text-xs text-red-500">{localLoginError}</p>}
+            <Button type="submit" className="w-full bg-[#00509E] hover:bg-[#003366] text-white rounded-full">
+              Entrar
+            </Button>
+          </form>
         </div>
       </div>
     );
@@ -160,12 +157,7 @@ export default function Admin() {
           </Link>
           <button
             onClick={() => {
-              if (user.isLocalAdmin) {
-                logoutLocalAdmin();
-                setUser(null);
-                return;
-              }
-              base44.auth.logout();
+              fetch("/api/admin/logout", { method: "POST", credentials: "include" }).finally(() => setUser(null));
             }}
             className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm text-blue-200 hover:bg-white/10 hover:text-white transition-all"
           >
@@ -193,7 +185,6 @@ export default function Admin() {
           </div>
           <span className="text-xs text-gray-500 hidden sm:block">
             {user.full_name || user.email}
-            {user.isLocalAdmin ? " · modo local" : ""}
           </span>
         </header>
 

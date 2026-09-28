@@ -1,8 +1,10 @@
 .git
 .gitignore
+.gcloudignore
+.dockerignore
 .agents
-base44
 .vs
+base44
 node_modules
 dist
 npm-debug.log*

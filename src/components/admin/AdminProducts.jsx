@@ -36,6 +36,16 @@ const CATEGORY_LABELS = {
   accesorio: "Accesorio"
 };
 
+function storageSlug(value, fallback = "general") {
+  return String(value || fallback)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || fallback;
+}
+
 export default function AdminProducts() {
   const queryClient = useQueryClient();
   const [search, setSearch] = useState("");
@@ -211,14 +221,28 @@ function ProductForm({ product, onChange, onSave, saving }) {
 
   const handleMainUpload = async (file) => {
     setUploadingMain(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_product_image",
+      kind: "main",
+      brandSlug: storageSlug(product.brand),
+      productSlug: storageSlug(product.slug || product.model_code || product.name),
+      entityId: product.id,
+    });
     set("image_url", file_url);
     setUploadingMain(false);
   };
 
   const handleGalleryUpload = async (files) => {
     setUploadingGallery(true);
-    const urls = await Promise.all(Array.from(files).map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url)));
+    const urls = await Promise.all(Array.from(files).map(f => base44.integrations.Core.UploadFile({
+      file: f,
+      type: "public_product_image",
+      kind: "gallery",
+      brandSlug: storageSlug(product.brand),
+      productSlug: storageSlug(product.slug || product.model_code || product.name),
+      entityId: product.id,
+    }).then(r => r.file_url)));
     set("image_gallery", [...(product.image_gallery || []), ...urls]);
     setUploadingGallery(false);
   };

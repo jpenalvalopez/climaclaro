@@ -1,5 +1,9 @@
 #env
 .env
+
+# Private exports copied from ClimaPlan. These belong to a separate project and
+# can contain customer, booking, user, and operational data.
+/imports/clima-plan/
 .env.*
 
 # Logs

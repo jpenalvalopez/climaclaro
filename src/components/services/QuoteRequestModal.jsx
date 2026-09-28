@@ -36,8 +36,11 @@ export default function QuoteRequestModal({ open, onOpenChange, service }) {
     const results = await Promise.all(
       newEntries.map(async (entry) => {
         try {
-          const { file_url } = await base44.integrations.Core.UploadFile({ file: entry.file });
-          return { ...entry, url: file_url, uploading: false };
+          const { file_id, file_asset } = await base44.integrations.Core.UploadFile({
+            file: entry.file,
+            type: "temp_upload",
+          });
+          return { ...entry, fileId: file_id, objectPath: file_asset?.object_path, uploading: false };
         } catch {
           return { ...entry, uploading: false, error: true };
         }
@@ -57,12 +60,12 @@ export default function QuoteRequestModal({ open, onOpenChange, service }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    const uploadedUrls = files.filter(f => f.url).map(f => f.url);
+    const uploadedFileIds = files.filter(f => f.fileId).map(f => f.fileId);
     await base44.entities.Presupuesto.create({
       ...form,
       service_id: service?.id || "",
       service_name: service?.title || "",
-      fotos: uploadedUrls,
+      foto_file_ids: uploadedFileIds,
       status: "nuevo",
     });
     setDone(true);

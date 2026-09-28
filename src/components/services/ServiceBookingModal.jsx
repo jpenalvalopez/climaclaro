@@ -31,7 +31,7 @@ export default function ServiceBookingModal({ service, selectedProduct, onClose 
     plantaAltura: "", marcaModelo: selectedProduct ? `${selectedProduct.brand || ""} ${selectedProduct.name || ""}`.trim() : "",
     unidadesInteriores: "", distanciaAprox: "", preinstalacion: "",
     comentarios: selectedProduct ? `Servicio: ${service.title} | Producto: ${selectedProduct.name}` : `Servicio: ${service.title}`,
-    fotos: [], aceptaCondiciones: false
+    fotos: [], foto_file_ids: [], aceptaCondiciones: false
   });
 
   // Load existing reservas to check availability
@@ -59,10 +59,16 @@ export default function ServiceBookingModal({ service, selectedProduct, onClose 
 
   const handleUpload = async (files) => {
     setUploading(true);
-    const urls = await Promise.all(
-      Array.from(files).map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url))
+    const uploaded = await Promise.all(
+      Array.from(files).map(f => base44.integrations.Core.UploadFile({
+        file: f,
+        type: "temp_upload",
+      }))
     );
-    setF("fotos", [...form.fotos, ...urls]);
+    setForm(f => ({
+      ...f,
+      foto_file_ids: [...(f.foto_file_ids || []), ...uploaded.map(item => item.file_id).filter(Boolean)],
+    }));
     setUploading(false);
   };
 
@@ -96,6 +102,7 @@ export default function ServiceBookingModal({ service, selectedProduct, onClose 
       preinstalacion: form.preinstalacion || undefined,
       comentarios: form.comentarios || undefined,
       fotos: form.fotos,
+      foto_file_ids: form.foto_file_ids,
     });
     setSubmitting(false);
     setStep("success");

@@ -19,6 +19,16 @@ const EMPTY = {
   active: true, sort_order: 100,
 };
 
+function storageSlug(value, fallback = "general") {
+  return String(value || fallback)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "") || fallback;
+}
+
 export default function AdminModelPages() {
   const queryClient = useQueryClient();
   const [editItem, setEditItem] = useState(null);
@@ -138,7 +148,13 @@ function ModelPageForm({ item, onChange, onSave, saving }) {
 
   const uploadHero = async (file) => {
     setUploadingHero(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_brand_asset",
+      brandSlug: storageSlug(item.brand_name),
+      kind: "hero",
+      entityId: item.id,
+    });
     set("hero_image_url", file_url);
     setUploadingHero(false);
   };

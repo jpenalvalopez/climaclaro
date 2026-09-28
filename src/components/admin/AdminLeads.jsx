@@ -48,7 +48,7 @@ const EMPTY_CONVERSION = {
   direccion: "", codigoPostal: "", ciudad: "", tipoVivienda: "", ascensor: "",
   accesoExterior: "", equipoComprado: "", aceptaCondiciones: false,
   plantaAltura: "", marcaModelo: "", unidadesInteriores: "", distanciaAprox: "",
-  preinstalacion: "", comentarios: "", fotos: []
+  preinstalacion: "", comentarios: "", fotos: [], foto_file_ids: []
 };
 
 export default function AdminLeads() {
@@ -100,6 +100,7 @@ export default function AdminLeads() {
         preinstalacion: form.preinstalacion || undefined,
         comentarios: form.comentarios || undefined,
         fotos: form.fotos || [],
+        foto_file_ids: form.foto_file_ids || [],
         estado: "pendiente",
       });
       await base44.entities.Lead.update(lead.id, { status: "converted" });
@@ -127,10 +128,17 @@ export default function AdminLeads() {
 
   const handlePhotoUpload = async (files) => {
     setUploading(true);
-    const urls = await Promise.all(
-      Array.from(files).map(f => base44.integrations.Core.UploadFile({ file: f }).then(r => r.file_url))
+    const uploaded = await Promise.all(
+      Array.from(files).map(f => base44.integrations.Core.UploadFile({
+        file: f,
+        type: "lead_photo",
+        leadId: convertLead?.id,
+      }))
     );
-    setConvForm(f => ({ ...f, fotos: [...(f.fotos || []), ...urls] }));
+    setConvForm(f => ({
+      ...f,
+      foto_file_ids: [...(f.foto_file_ids || []), ...uploaded.map(item => item.file_id).filter(Boolean)],
+    }));
     setUploading(false);
   };
 

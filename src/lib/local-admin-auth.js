@@ -1,7 +1,7 @@
 const LOCAL_ADMIN_STORAGE_KEY = "climaclaro_local_admin";
 
 export function isLocalAdminLoginEnabled() {
-  return import.meta.env.VITE_ENABLE_LOCAL_ADMIN_LOGIN !== "false";
+  return false;
 }
 
 export function getLocalAdminUser() {
@@ -20,7 +20,7 @@ export function getLocalAdminUser() {
 export function loginLocalAdmin(password) {
   if (!isLocalAdminLoginEnabled()) return { ok: false, message: "El login local no está habilitado." };
 
-  const expectedPassword = import.meta.env.VITE_LOCAL_ADMIN_PASSWORD || "";
+  const expectedPassword = "";
   if (expectedPassword && password !== expectedPassword) {
     return { ok: false, message: "Contraseña local incorrecta." };
   }

@@ -52,7 +52,12 @@ export default function AdminPageSections() {
 
   const handleUpload = async (file) => {
     setUploading(true);
-    const { file_url } = await base44.integrations.Core.UploadFile({ file });
+    const { file_url } = await base44.integrations.Core.UploadFile({
+      file,
+      type: "public_web_asset",
+      kind: editSection?.page || "home",
+      entityId: editSection?.id,
+    });
     setEditSection(s => ({ ...s, image_url: file_url }));
     setUploading(false);
   };
